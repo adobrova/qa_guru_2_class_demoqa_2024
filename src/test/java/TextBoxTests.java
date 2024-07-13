@@ -3,7 +3,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import static com.codeborne.selenide.CollectionCondition.size;
-import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.*;
 
@@ -13,6 +13,7 @@ public class TextBoxTests {
     static void beforeAll(){
         Configuration.browserSize = "1980x1080";
         Configuration.baseUrl = "https://demoqa.com";
+        Configuration.pageLoadStrategy = "eager";
 
         // перед коммитом удалить/закомментировать/поменять на false
         // при удалённом запуске тестов - браузер останется висеть открытым и будет занимать ресурсы
@@ -28,11 +29,12 @@ public class TextBoxTests {
         executeJavaScript("$('#fixedban').remove()");
         executeJavaScript("$('footer').remove()");
 
+
         //заполняем таблицу
         $("#firstName").setValue("Albina");
         $("#lastName").setValue("Dobrova");
         $("#userEmail").setValue("rezolventa86@rambler.ru");
-        $("label[for=gender-radio-2]").click();                //здесь выбор пола
+        $("#genterWrapper").$(byText("Female")).click();                //здесь выбор пола
         $("#userNumber").setValue("9872552206");
 
 
@@ -51,17 +53,18 @@ public class TextBoxTests {
 
 
          $("#subjectsInput").setValue("Comp").pressEnter();
-        $("label[for=hobbies-checkbox-1]").click();  //здесь выбор хобби
-        $("label[for=hobbies-checkbox-2]").click();
+        $("#hobbiesWrapper").$(byText("Sports")).click();
+        $("#hobbiesWrapper").$(byText("Reading")).click();
+
 
         $("#uploadPicture").uploadFromClasspath("cat.jpg");
         $("#currentAddress").setValue("Ufa, Russia");
 
         $("#state").click();
-        $("#state").$(byText("NCR")).click();
+        $("#stateCity-wrapper").$(byText("NCR")).click();
 
         $("#city").click();
-        $("#city").$(byText("Delhi")).click();
+        $("#stateCity-wrapper").$(byText("Delhi")).click();
 
 
 
@@ -76,16 +79,16 @@ public class TextBoxTests {
         $$("[class~=table] tbody tr").shouldHave(size(10));
 
         //проверка на все заполненные поля в финальной таблице
-        $(byText("Albina Dobrova")).shouldBe(visible);
-        $(byText("rezolventa86@rambler.ru")).shouldBe(visible);
-        $(byText("Female")).shouldBe(visible);
-        $(byText("9872552206")).shouldBe(visible);
-        $(byText("02 January,1986")).shouldBe(visible);
-        $(byText("Computer Science")).shouldBe(visible);
-        $(byText("Sports, Reading")).shouldBe(visible);
-        $(byText("cat.jpg")).shouldBe(visible);
-        $(byText("Ufa, Russia")).shouldBe(visible);
-        $(byText("NCR Delhi")).shouldBe(visible);
+        $(".modal-content").shouldHave(text("Albina Dobrova"));
+        $(".modal-content").shouldHave(text("rezolventa86@rambler.ru"));
+        $(".modal-content").shouldHave(text("Female"));
+        $(".modal-content").shouldHave(text("9872552206"));
+        $(".modal-content").shouldHave(text("02 January,1986"));
+        $(".modal-content").shouldHave(text("Computer Science"));
+        $(".modal-content").shouldHave(text("Sports, Reading"));
+        $(".modal-content").shouldHave(text("cat.jpg"));
+        $(".modal-content").shouldHave(text("Ufa, Russia"));
+        $(".modal-content").shouldHave(text("NCR Delhi"));
 
 
 
